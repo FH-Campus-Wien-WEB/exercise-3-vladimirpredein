@@ -7,19 +7,33 @@ h1 {
 
 /* Constrain the page to the viewport */
 html, body {
-  height: 100vh;
+  height: 100%;
 }
 
 /* Center the nav's header and list */
 nav {
+  grid-area: n;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+nav ul {
+  margin: 8px;
+  padding: 0;
+  width: 130px;
+  list-style-type: none;
+}
+
 /* navigation buttons have full width */
 nav button {
   width: 100%;
+  padding: 2px 4px;
+  font-size: 90%;
+}
+
+nav li {
+  margin-bottom: 4px;
 }
 
 /* Remove unnecessary space and bullets from the lists */
@@ -30,22 +44,86 @@ ul {
 }
 
 /* Task 2.1. Lay out the childs of the 'body' using Grid Template Areas. */
+body {
+  margin: 0;
+  min-height: 100vh;
 
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "h"
+    "n"
+    "m"
+    "f";
+
+    overflow: hidden;
+}
+
+header {
+  grid-area: h;
+}
+
+nav {
+  grid-area: n;
+  overflow-y: auto;
+}
+
+
+footer {
+  grid-area: f;
+}
+
+@media (min-width: 800px) {
+  body {
+    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "h h"
+      "n m"
+      "f f";
+  }
+}
 
 /* Task 3.1. Make the header element a flex container and center its children
    vertically and horizontally.
  */
-
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* Task 3.2. Make the list items of the unordered list in the nav element a flex container, 
    use column direction and center the child items
  */
+nav li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 4px;
+}
 
 /* Task 3.3. Make the main element a Flexbox container */
+main {
+  grid-area: m;
+  overflow-y: auto;
 
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px;
+  justify-content: center;
+}
 
 /* Task 3.4. Make the footer's ul a Flexbox container */
-
+footer ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin: 8px;
+}
 
 /* From here on styling from exercise 1 */
 img {
@@ -55,9 +133,17 @@ img {
 article {
   background-color: lightgray;
   border-radius: 16px;
-  padding: 16px;
-  width: 384px;
-  margin: 8px;
+  padding: 12px;
+
+  flex: 1 1 280px;
+  max-width: 330px;
+
+  margin: 0;
+}
+
+article img {
+  max-width: 100%;
+  height: auto;
 }
 
 a {

@@ -16,26 +16,49 @@ app.use(express.static(path.join(__dirname, 'files')));
    that are currently in the movie model.
 */
 
+app.get('/genres', function (req, res) {
+  const genres = [];
+
+  for (const movie of Object.values(movieModel)) {
+    for (const genre of movie.Genres) {
+      if (!genres.includes(genre)) {
+        genres.push(genre);
+      }
+    }
+  }
+
+  genres.sort();
+  res.send(genres);
+});
+
+// Configure a 'get' endpoint for a specific movie
+app.get('/movies', function (req, res) {
+  let movies = Object.values(movieModel);
+
+  if (req.query.genre) {
+    movies = movies.filter(function (movie) {
+      return movie.Genres.includes(req.query.genre);
+    });
+  }
+
+  res.send(movies);
+});
+
 /* Task 1.4: Extend the GET /movies endpoint:
    When a query parameter for a specific genre is given, 
    return only movies that have the given genre
  */
-app.get('/movies', function (req, res) {
-  let movies = Object.values(movieModel)
-  res.send(movies);
-})
-
-// Configure a 'get' endpoint for a specific movie
 app.get('/movies/:imdbID', function (req, res) {
-  const id = req.params.imdbID
-  const exists = id in movieModel
- 
-  if (exists) {
-    res.send(movieModel[id])
+  const imdbID = req.params.imdbID;
+  const movie = movieModel[imdbID];
+
+  if (movie) {
+    res.send(movie);
   } else {
-    res.sendStatus(404)    
+    res.sendStatus(404);
   }
-})
+});
+
 
 app.put('/movies/:imdbID', function(req, res) {
 
